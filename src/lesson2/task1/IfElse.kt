@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson2.task1
 
 import lesson1.task1.discriminant
@@ -65,11 +66,12 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
 fun ageDescription(age: Int): String {
-    if ((age%100>=11) && (age%100<=14)){  return (age.toString()+" лет")}
-    else
-    if (age%10==1) {return (age.toString()+" год")}
-    else if ((age%10>=2) && (age%10<=4)) {return (age.toString()+" года")}
-else return (age.toString()+" лет")
+    return when {
+        (age % 100 >= 11) && (age % 100 <= 14) -> age.toString() + " лет"
+        age % 10 == 1 -> age.toString() + " год"
+        (age % 10 >= 2) && (age % 10 <= 4) -> age.toString() + " года"
+        else -> age.toString() + " лет"
+    }
 }
 
 /**
@@ -82,15 +84,12 @@ else return (age.toString()+" лет")
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
                    t3: Double, v3: Double): Double {
-    var s=(t1*v1+t2*v2+t3*v3)/2.0
-    if (t1*v1>=s) return s/v1
-    else {
-        s=s-t1*v1
-        if (t2*v2>=s) return (t1+s/v2)
-        else {
-            s=s-t2*v2
-            return (t1+t2+s/v3)
-        }
+    val s = (t1 * v1 + t2 * v2 + t3 * v3) / 2.0
+    return when {
+        t1 * v1 >= s -> s / v1
+        t2 * v2 >= s - t1 * v1 -> t1 + (s - t1 * v1) / v2
+        else -> t1 + t2 + (s - t1 * v1 - t2 * v2) / v3
+
     }
 
 }
@@ -107,13 +106,11 @@ fun timeForHalfWay(t1: Double, v1: Double,
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
-    if (kingX==rookX1 || kingY==rookY1) {
-        if (kingX==rookX2 || kingY==rookY2) return 3
-        else return 1
-    }
-    else {
-        if (kingX==rookX2 || kingY==rookY2) return 2
-        else return 0
+    return when {
+        (kingX == rookX1 || kingY == rookY1) && (kingX == rookX2 || kingY == rookY2) -> 3
+        (kingX == rookX1 || kingY == rookY1) -> 1
+        (kingX == rookX2 || kingY == rookY2) -> 2
+        else -> 0
     }
 }
 
@@ -130,14 +127,11 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
                           bishopX: Int, bishopY: Int): Int {
-    if (kingX == rookX || kingY==rookY)
-    {
-        if (abs(kingX-bishopX)== abs(kingY-bishopY)) return 3
-        else return 1
-    }
-    else {
-        if (abs(kingX-bishopX)== abs(kingY-bishopY)) return 2
-        else return 0
+    return when {
+        (kingX == rookX || kingY == rookY) && (abs(kingX - bishopX) == abs(kingY - bishopY)) -> 3
+        (kingX == rookX || kingY == rookY) -> 1
+        (abs(kingX - bishopX) == abs(kingY - bishopY)) -> 2
+        else -> 0
     }
 }
 
@@ -150,14 +144,13 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    if (a+b>c && a+c>b && b+c>a)
-    {
-        if (a*a+b*b==c*c || a*a+c*c==b*b || b*b+c*c==a*a) return 1
-        if (a*a+b*b<c*c || a*a+c*c<b*b || b*b+c*c<a*a) return 2
-        else return 0
-
-    }
-    else return -1
+    if (a + b > c && a + c > b && b + c > a) {
+        return when {
+            (a * a + b * b == c * c || a * a + c * c == b * b || b * b + c * c == a * a) -> 1
+            (a * a + b * b < c * c || a * a + c * c < b * b || b * b + c * c < a * a) -> 2
+            else -> 0
+        }
+    } else return -1
 }
 
 /**
@@ -169,10 +162,9 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    if ((a<=c && b<=d) || (c<=a && d<=b)) {
-        if (min(b,d) - max(a,c)>=0) return min(b,d) - max(a,c)
-        else return -1
+    return when {
+        ((a <= c && b <= d) || (c <= a && d <= b)) && (min(b, d) - max(a, c) >= 0) -> min(b, d) - max(a, c)
+        ((c <= a && d >= b) || (a <= c && d <= b)) -> min(b - a, d - c)
+        else -> -1
     }
-    else if ((c<=a && d>=b) || (a<=c && d<=b)) return min(b-a,d-c)
-    else return -1
 }

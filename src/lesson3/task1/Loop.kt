@@ -1,6 +1,8 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson3.task1
 
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.sqrt
 
 /**
@@ -66,7 +68,15 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int = TODO()
+fun digitNumber(n: Int): Int {
+    var count = 0
+    var number = n
+    do {
+        number /= 10
+        count++
+    } while (number > 0)
+    return count
+}
 
 /**
  * Простая
@@ -74,7 +84,18 @@ fun digitNumber(n: Int): Int = TODO()
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fib(n: Int): Int {
+    var a = 1
+    var b = 1
+    if (n == 1 || n == 2) return 1
+    else {
+        for (i in 3..n) {
+            a += b
+            b = a - b
+        }
+        return a
+    }
+}
 
 /**
  * Простая
@@ -82,21 +103,35 @@ fun fib(n: Int): Int = TODO()
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
+fun lcm(m: Int, n: Int): Int {
+    val a = max(n,m)
+    val b = min(n,m)
+    var number = a
+    while (number % b != 0) number += a
+    return number
+}
 
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = TODO()
+fun minDivisor(n: Int): Int {
+    var a = 2
+    while (n % a != 0) a++
+    return a
+}
 
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int {
+    var a = n - 1
+    while (n % a != 0) a--
+    return a
+}
 
 /**
  * Простая
@@ -105,7 +140,16 @@ fun maxDivisor(n: Int): Int = TODO()
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean {
+    var b = true
+    for (i in 2..max(m,n))
+        if (m % i == 0 && n % i == 0) {
+            b = false
+            break
+        }
+    return b
+
+}
 
 /**
  * Простая

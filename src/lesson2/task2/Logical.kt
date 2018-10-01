@@ -1,8 +1,10 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson2.task2
 
 import lesson1.task1.sqr
 import kotlin.math.abs
+import kotlin.math.min
 import kotlin.math.sqrt
 
 /**
@@ -20,7 +22,7 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
 fun isNumberHappy(number: Int): Boolean =
-        (number/1000+number/100%10) == (number/10%10+number%10)
+        (number / 1000 + number / 100 % 10) == (number / 10 % 10 + number % 10)
 
 
 /**
@@ -48,8 +50,7 @@ fun daysInMonth(month: Int, year: Int): Int {
             if (year % 400 == 0) return 29
             else if (year % 100 == 0) return 28
             else return 29
-        }
-        else return 28
+        } else return 28
     }
 }
 
@@ -63,7 +64,7 @@ fun daysInMonth(month: Int, year: Int): Int {
  */
 fun circleInside(x1: Double, y1: Double, r1: Double,
                  x2: Double, y2: Double, r2: Double): Boolean =
-    r2 >= r1 + sqrt(sqr(x2 - x1) + sqr(y2 - y1))
+        r2 >= r1 + sqrt(sqr(x2 - x1) + sqr(y2 - y1))
 
 /**
  * Средняя
@@ -75,5 +76,5 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  * Вернуть true, если кирпич пройдёт
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean =
-        (a <= r && (b <= s || c <= s)) || (b <= r && (a <= s || c <= s) || c <= r && (a <= s || b <= s))
+        minOf(a, b, c) <= min(r, s) && (a + b + c - minOf(a, b, c) - maxOf(a, b, c) <= maxOf(r, s))
 
