@@ -3,6 +3,7 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -67,9 +68,9 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  */
 fun ageDescription(age: Int): String {
     return when {
-        (age % 100 >= 11) && (age % 100 <= 14) -> age.toString() + " лет"
+        age % 100 in 11..14 -> age.toString() + " лет"
         age % 10 == 1 -> age.toString() + " год"
-        (age % 10 >= 2) && (age % 10 <= 4) -> age.toString() + " года"
+        age % 10 in 2..4 -> age.toString() + " года"
         else -> age.toString() + " лет"
     }
 }
@@ -106,10 +107,12 @@ fun timeForHalfWay(t1: Double, v1: Double,
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
+    val a = (kingX == rookX1 || kingY == rookY1)
+    val b = (kingX == rookX2 || kingY == rookY2)
     return when {
-        (kingX == rookX1 || kingY == rookY1) && (kingX == rookX2 || kingY == rookY2) -> 3
-        (kingX == rookX1 || kingY == rookY1) -> 1
-        (kingX == rookX2 || kingY == rookY2) -> 2
+        a && b -> 3
+        a -> 1
+        b -> 2
         else -> 0
     }
 }
@@ -127,10 +130,12 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
                           bishopX: Int, bishopY: Int): Int {
+    val a = (kingX == rookX || kingY == rookY)
+    val b = (abs(kingX - bishopX) == abs(kingY - bishopY))
     return when {
-        (kingX == rookX || kingY == rookY) && (abs(kingX - bishopX) == abs(kingY - bishopY)) -> 3
-        (kingX == rookX || kingY == rookY) -> 1
-        (abs(kingX - bishopX) == abs(kingY - bishopY)) -> 2
+        a && b -> 3
+        a -> 1
+        b -> 2
         else -> 0
     }
 }
@@ -143,14 +148,18 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int =
-        if (a + b > c && a + c > b && b + c > a) {
-            when {
-                (a * a + b * b == c * c || a * a + c * c == b * b || b * b + c * c == a * a) -> 1
-                (a * a + b * b < c * c || a * a + c * c < b * b || b * b + c * c < a * a) -> 2
-                else -> 0
-            }
-        } else -1
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    val mi = minOf(a, b, c)
+    val ma = maxOf(a, b, c)
+    val med = a + b + c - mi - ma
+    return if (mi + med > ma)
+        when {
+            sqr(mi) + sqr(med) == sqr(ma) -> 1
+            sqr(mi) + sqr(med) < sqr(ma) -> 2
+            else -> 0
+        }
+    else -1
+}
 
 
 /**
