@@ -131,10 +131,11 @@ fun minDivisor(n: Int): Int {
 fun maxDivisor(n: Int): Int {
     if (n % 2 == 0) return n / 2
     if (isPrime(n)) return 1
-    for (i in n / 2 - 1 downTo sqrt(n.toDouble()).toInt() step 2)
+    for (i in n - 2 downTo sqrt(n.toDouble()).toInt() step 2)
         if (n % i == 0) return i
     return 1
 }
+
 
 /**
  * Простая
@@ -145,7 +146,7 @@ fun maxDivisor(n: Int): Int {
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
     val a = sqrt(min(n, m).toDouble()).toInt()
-    if (m % 2 == 0 && n % 2 == 0 || max(m, n) % min(m, n) == 0) return false
+    if (m % 2 == 0 && n % 2 == 0 || max(m, n) % min(m, n) == 0 && min(m, n) != 1) return false
     for (i in 3..a step 2)
         if (m % i == 0 && n % i == 0) return false
     return true
