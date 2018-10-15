@@ -249,6 +249,7 @@ fun factorizeToString(n: Int): String {
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
 fun convert(n: Int, base: Int): List<Int> {
+    if (n == 0) return listOf(0)
     var m = n
     val list: MutableList<Int> = mutableListOf()
     while (m != 0) {
@@ -267,6 +268,7 @@ fun convert(n: Int, base: Int): List<Int> {
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String {
+    if (n == 0) return "0"
     var m = n
     val list: MutableList<Char> = mutableListOf()
     while (m != 0) {
