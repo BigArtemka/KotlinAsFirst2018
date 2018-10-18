@@ -87,14 +87,12 @@ fun digitNumber(n: Int): Int {
 fun fib(n: Int): Int {
     var a = 1
     var b = 1
-    return if (n == 1 || n == 2) 1
-    else {
-        for (i in 3..n) {
-            a += b
-            b = a - b
-        }
-        a
+    if (n == 1 || n == 2) return 1
+    for (i in 3..n) {
+        a += b
+        b = a - b
     }
+    return a
 }
 
 /**

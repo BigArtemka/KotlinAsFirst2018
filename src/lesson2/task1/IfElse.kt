@@ -152,13 +152,12 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     val mi = minOf(a, b, c)
     val ma = maxOf(a, b, c)
     val med = a + b + c - mi - ma
-    return if (mi + med > ma)
-        when {
-            sqr(mi) + sqr(med) == sqr(ma) -> 1
-            sqr(mi) + sqr(med) < sqr(ma) -> 2
-            else -> 0
-        }
-    else -1
+    return when {
+        mi + med <= ma -> -1
+        sqr(mi) + sqr(med) == sqr(ma) -> 1
+        sqr(mi) + sqr(med) < sqr(ma) -> 2
+        else -> 0
+    }
 }
 
 
@@ -171,6 +170,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    return if (min(b, d) - max(a, c) >= 0) min(b, d) - max(a, c)
+    val r = min(b, d) - max(a, c)
+    return if (r >= 0) r
     else -1
 }

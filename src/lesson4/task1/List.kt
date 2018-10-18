@@ -174,7 +174,6 @@ fun times(a: List<Double>, b: List<Double>): Double {
  */
 fun polynom(p: List<Double>, x: Double): Double {
     var px = 0.0
-    if (p.isEmpty()) return 0.0
     for (i in 0 until p.size)
         px += p[i] * x.pow(i)
     return px
@@ -191,7 +190,6 @@ fun polynom(p: List<Double>, x: Double): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
-    if (list.isEmpty()) return list
     var sum = 0.0
     for (i in 0 until list.size - 1) sum += list[i]
     for (i in list.size - 1 downTo 1) {
