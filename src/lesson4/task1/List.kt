@@ -225,19 +225,8 @@ fun factorize(n: Int): List<Int> {
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String {
-    var i = 0
-    var a = minDivisor(n)
-    var m = n / a
-    var s = a.toString()
-    while (m != 1) {
-        a = minDivisor(m)
-        s += "*" + a.toString()
-        m /= a
-        i++
-    }
-    return s
-}
+fun factorizeToString(n: Int): String =
+        factorize(n).joinToString(separator = "*")
 
 /**
  * Средняя
@@ -265,18 +254,8 @@ fun convert(n: Int, base: Int): List<Int> {
  * строчными буквами: 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
-fun convertToString(n: Int, base: Int): String {
-    if (n == 0) return "0"
-    var m = n
-    val list: MutableList<Char> = mutableListOf()
-    while (m != 0) {
-        list.add(convertToLetter(m % base))
-        m /= base
-    }
-    return list.reversed().joinToString(separator = "")
-
-
-}
+fun convertToString(n: Int, base: Int): String =
+        convert(n, base).map { convertToLetter(it) }.joinToString(separator = "")
 
 
 fun convertToLetter(n: Int): Char {
@@ -328,7 +307,12 @@ fun convertToLetter(n: Int): Char {
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int {
+    var number = 0
+    for (i in 0 until digits.size)
+        number += digits[i] * base.toDouble().pow(digits.size - i - 1).toInt()
+    return number
+}
 
 /**
  * Сложная
