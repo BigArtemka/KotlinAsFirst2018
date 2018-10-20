@@ -300,6 +300,47 @@ fun convertToLetter(n: Int): Char {
     }
 }
 
+fun convertToDigit(n: Char): Int {
+    return when (n) {
+        '1' -> 1
+        '2' -> 2
+        '3' -> 3
+        '4' -> 4
+        '5' -> 5
+        '6' -> 6
+        '7' -> 7
+        '8' -> 8
+        '9' -> 9
+        'a' -> 10
+        'b' -> 11
+        'c' -> 12
+        'd' -> 13
+        'e' -> 14
+        'f' -> 15
+        'g' -> 16
+        'h' -> 17
+        'i' -> 18
+        'j' -> 19
+        'k' -> 20
+        'l' -> 21
+        'm' -> 22
+        'n' -> 23
+        'o' -> 24
+        'p' -> 25
+        'q' -> 26
+        'r' -> 27
+        's' -> 28
+        't' -> 29
+        'u' -> 30
+        'v' -> 31
+        'w' -> 32
+        'x' -> 33
+        'y' -> 34
+        'z' -> 35
+        else -> 0
+    }
+}
+
 /**
  * Средняя
  *
@@ -323,7 +364,12 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: str = "13c", base = 14 -> 250
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+fun decimalFromString(str: String, base: Int): Int {
+    var number = 0
+    for (i in 0 until str.length)
+        number += convertToDigit(str[i]) * base.toDouble().pow(str.length - 1 - i).toInt()
+    return number
+}
 
 /**
  * Сложная
@@ -333,7 +379,32 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    var m = n
+    var str = digitToRoman(m % 10, "I", "V", "X")
+    m /= 10
+    str = digitToRoman(m % 10, "X", "L", "C") + str
+    m /= 10
+    str = digitToRoman(m % 10, "C", "D", "M") + str
+    m /= 10
+    str = digitToRoman(m % 10, "M", "M", "M") + str
+    return str
+}
+
+fun digitToRoman(n: Int, a: String, b: String, c: String): String {
+    return when (n) {
+        1 -> a
+        2 -> a + a
+        3 -> a + a + a
+        4 -> a + b
+        5 -> b
+        6 -> b + a
+        7 -> b + a + a
+        8 -> b + a + a + a
+        9 -> a + c
+        else -> ""
+    }
+}
 
 /**
  * Очень сложная
