@@ -386,7 +386,9 @@ fun roman(n: Int): String {
     str = digitToRoman(m % 10, "X", "L", "C") + str
     m /= 10
     str = digitToRoman(m % 10, "C", "D", "M") + str
-    return "M".repeat(m / 10) + str
+    m /= 10
+    str = digitToRoman(m % 10, "M", "M", "M") + str
+    return str
 }
 
 fun digitToRoman(n: Int, a: String, b: String, c: String): String {
