@@ -190,12 +190,8 @@ fun polynom(p: List<Double>, x: Double): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
-    var sum = 0.0
-    for (i in 0 until list.size - 1) sum += list[i]
-    for (i in list.size - 1 downTo 1) {
-        list[i] += sum
-        sum -= list[i - 1]
-    }
+    for (i in 1 until list.size)
+        list[i] += list.subList(0, i).sum() - list.subList(0, i - 1).sum()
     return list
 }
 
@@ -414,3 +410,4 @@ fun digitToRoman(n: Int, a: String, b: String, c: String): String {
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String = TODO()
+
