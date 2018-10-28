@@ -126,13 +126,7 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {
-    if (n % 2 == 0) return n / 2
-    if (isPrime(n)) return 1
-    for (i in n - 2 downTo sqrt(n.toDouble()).toInt() step 2)
-        if (n % i == 0) return i
-    return 1
-}
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
 
 
 /**
@@ -306,7 +300,7 @@ fun squareSequenceDigit(n: Int): Int {
         number++
     }
 
-    return sqr / 10.0.pow(k - n.toDouble()).toInt() % 10
+    return sqr / 10.0.pow(  k - n.toDouble()).toInt() % 10
 }
 
 /**

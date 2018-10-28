@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import java.sql.Struct
+
 /**
  * Пример
  *
@@ -95,12 +97,14 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
-    val mapC = (mapA + mapB).toMutableMap()
-
-    mapB.forEach { key, value ->
-        if (mapC[key] != value) mapC[key] += ", $value"
+    val mapC = (mapB + mapA).toMutableMap()
+    for ((key, value) in mapB) {
+        val v = mapA[key]
+        if (v != null && value != v)
+            mapC[key] = "$v, $value"
     }
     return mapC
+
 }
 
 /**
@@ -113,7 +117,15 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5))
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
-fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
+fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
+    val map = mutableMapOf<Int, List<String>>()
+    for ((student, grade) in grades)
+        if (!map.containsKey(grade)) map[grade] = mutableListOf(student) else
+            map[grade] = map[grade]!! + student
+    for ((grade, list) in map)
+        map[grade] = list.sortedDescending()
+    return map
+}
 
 /**
  * Простая
@@ -154,7 +166,12 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+    var list = listOf<Pair<String, Double>>()
+    for ((name, pair) in stuff) if (pair.first == kind) list += name to pair.second
+    if (list.isEmpty()) return null
+    return list.minBy { it.second }!!.first
+}
 
 /**
  * Сложная
@@ -180,7 +197,16 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *          "Mikhail" to setOf("Sveta", "Marat")
  *        )
  */
-fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO()
+fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
+    val map = mutableMapOf<String, Set<String>>()
+    for ((item, set) in friends) {
+        map[item] = set
+        for (name in set) if (friends.containsKey(name))
+            map[item] = map[item]!! + friends[name]!! - item else
+            map[name] = setOf()
+    }
+    return map
+}
 
 /**
  * Простая
