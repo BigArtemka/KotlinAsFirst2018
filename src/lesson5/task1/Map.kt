@@ -205,7 +205,7 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
             map[item] = map[item]!! + friends[name]!! - item else
             map[name] = setOf()
     }
-    return map.toSortedMap(compareBy<String> { it.length }.thenBy { it })
+    return map.toSortedMap()
 }
 
 /**
