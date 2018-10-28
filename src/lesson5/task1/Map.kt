@@ -202,10 +202,12 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
     for ((item, set) in friends) {
         map[item] = set
         for (name in set) if (friends.containsKey(name))
-            map[item] = map[item]!! + friends[name]!! - item else
+            map[item] = map[item]!! + friends[name]!! - item
+        for (name in set) if (!friends.containsKey(name))
             map[name] = setOf()
     }
-    return map.toSortedMap()
+    return map
+
 }
 
 /**
