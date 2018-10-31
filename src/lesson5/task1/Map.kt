@@ -137,7 +137,12 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
+    val map = a.toMutableMap()
+    for ((key, value) in b)
+        if (map.containsKey(key) && map[key] == value) map.remove(key)
+    return map.isEmpty()
+}
 
 /**
  * Средняя
@@ -285,7 +290,11 @@ fun hasAnagrams(words: List<String>): Boolean = TODO()
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    for (i in list)
+        if ((list - i).contains(number - i)) return Pair(list.indexOf(i), list.indexOf(number - i))
+    return Pair(-1, -1)
+}
 
 /**
  * Очень сложная
