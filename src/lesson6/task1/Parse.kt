@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import lesson2.task2.daysInMonth
+
 /**
  * Пример
  *
@@ -49,12 +51,10 @@ fun main(args: Array<String>) {
         val seconds = timeStrToSeconds(line)
         if (seconds == -1) {
             println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-        }
-        else {
+        } else {
             println("Прошло секунд с начала суток: $seconds")
         }
-    }
-    else {
+    } else {
         println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
     }
 }
@@ -71,7 +71,35 @@ fun main(args: Array<String>) {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val parts = str.split(" ").toMutableList()
+    return try {
+        if (parts.size != 3) return ""
+        parts[1] = mountToDigit(parts[1])
+        if (parts[0].toInt() > daysInMonth(parts[1].toInt(), parts[2].toInt())) return ""
+        String.format("%02d.%02d.%s", parts[0].toInt(), parts[1].toInt(), parts[2])
+    } catch (e: NumberFormatException) {
+        ""
+    }
+}
+
+fun mountToDigit(srt: String): String {
+    return when (srt) {
+        "января" -> "1"
+        "февраля" -> "2"
+        "марта" -> "3"
+        "апреля" -> "4"
+        "мая" -> "5"
+        "июня" -> "6"
+        "июля" -> "7"
+        "августа" -> "8"
+        "сентрября" -> "9"
+        "октября" -> "10"
+        "ноября" -> "11"
+        "декабря" -> "12"
+        else -> throw NumberFormatException()
+    }
+}
 
 /**
  * Средняя
