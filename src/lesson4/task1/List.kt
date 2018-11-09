@@ -3,6 +3,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson3.task1.isPrime
 import lesson3.task1.minDivisor
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -190,8 +191,12 @@ fun polynom(p: List<Double>, x: Double): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
-    for (i in 1 until list.size)
-        list[i] += list.subList(0, i).sum() - list.subList(0, i - 1).sum()
+    if (list.isEmpty()) return list
+    var sum = list.sum() - list.last()
+    for (i in list.size - 1 downTo 1) {
+        list[i] += sum
+        sum -= list[i - 1]
+    }
     return list
 }
 
@@ -204,12 +209,12 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
  */
 fun factorize(n: Int): List<Int> {
     var m = n
-    var i = 0
     val list: MutableList<Int> = mutableListOf()
+    var i = 2
     while (m != 1) {
-        list.add(minDivisor(m))
-        m /= list[i]
-        i++
+        while (m % i != 0) i++
+        list.add(i)
+        m /= i
     }
     return list
 }
@@ -255,45 +260,8 @@ fun convertToString(n: Int, base: Int): String =
 
 
 fun convertToLetter(n: Int): Char {
-    return when (n) {
-        0 -> '0'
-        1 -> '1'
-        2 -> '2'
-        3 -> '3'
-        4 -> '4'
-        5 -> '5'
-        6 -> '6'
-        7 -> '7'
-        8 -> '8'
-        9 -> '9'
-        10 -> 'a'
-        11 -> 'b'
-        12 -> 'c'
-        13 -> 'd'
-        14 -> 'e'
-        15 -> 'f'
-        16 -> 'g'
-        17 -> 'h'
-        18 -> 'i'
-        19 -> 'j'
-        20 -> 'k'
-        21 -> 'l'
-        22 -> 'm'
-        23 -> 'n'
-        24 -> 'o'
-        25 -> 'p'
-        26 -> 'q'
-        27 -> 'r'
-        28 -> 's'
-        29 -> 't'
-        30 -> 'u'
-        31 -> 'v'
-        32 -> 'w'
-        33 -> 'x'
-        34 -> 'y'
-        35 -> 'z'
-        else -> n.toChar()
-    }
+    if (n > 9) return 'a'
+    return 'a'
 }
 
 fun convertToDigit(n: Char): Int {
@@ -387,20 +355,20 @@ fun roman(n: Int): String {
     return str
 }
 
-fun digitToRoman(n: Int, a: String, b: String, c: String): String {
-    return when (n) {
-        1 -> a
-        2 -> a + a
-        3 -> a + a + a
-        4 -> a + b
-        5 -> b
-        6 -> b + a
-        7 -> b + a + a
-        8 -> b + a + a + a
-        9 -> a + c
-        else -> ""
-    }
-}
+fun digitToRoman(n: Int, a: String, b: String, c: String): String =
+        when (n) {
+            1 -> a
+            2 -> a + a
+            3 -> a + a + a
+            4 -> a + b
+            5 -> b
+            6 -> b + a
+            7 -> b + a + a
+            8 -> b + a + a + a
+            9 -> a + c
+            else -> ""
+        }
+
 
 /**
  * Очень сложная
@@ -444,7 +412,7 @@ fun russian(n: Int): String {
         19 -> "девятнадцать тысяч"
         else -> toRussian(m)[3]
     }
-    if (m % 10 == 0 && m > 0) s += "тысяч"
+    if (m % 10 == 0 && m > 10) s += "тысяч"
     m /= 10
     s += toRussian(m)[1]
     m /= 10
@@ -466,6 +434,8 @@ fun toRussian(n: Int): List<String> =
             else -> listOf("", "", "", "")
         }
 
-
+fun main(args: Array<String>) {
+    println((11 - 10 + 'a'.toInt()).toChar())
+}
 
 

@@ -137,12 +137,12 @@ fun maxDivisor(n: Int): Int = n / minDivisor(n)
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    val a = sqrt(min(n, m).toDouble()).toInt()
-    if (m % 2 == 0 && n % 2 == 0 || max(m, n) % min(m, n) == 0 && min(m, n) != 1) return false
-    for (i in 3..a step 2)
-        if (m % i == 0 && n % i == 0) return false
-    return true
-
+    var a = m
+    var b = n
+    while (a != b)
+        if (a > b) a -= b else
+            b -= a
+    return (a == 1)
 }
 
 /**
@@ -300,7 +300,7 @@ fun squareSequenceDigit(n: Int): Int {
         number++
     }
 
-    return sqr / 10.0.pow(  k - n.toDouble()).toInt() % 10
+    return sqr / 10.0.pow(k - n.toDouble()).toInt() % 10
 }
 
 /**
