@@ -259,51 +259,14 @@ fun convertToString(n: Int, base: Int): String =
         convert(n, base).map { convertToLetter(it) }.joinToString(separator = "")
 
 
-fun convertToLetter(n: Int): Char {
-    if (n > 9) return 'a'
-    return 'a'
-}
+fun convertToLetter(n: Int): Char =
+        if (n > 9) (n - 10 + 'a'.toInt()).toChar()
+        else ((n + '0'.toInt()).toChar())
 
-fun convertToDigit(n: Char): Int {
-    return when (n) {
-        '1' -> 1
-        '2' -> 2
-        '3' -> 3
-        '4' -> 4
-        '5' -> 5
-        '6' -> 6
-        '7' -> 7
-        '8' -> 8
-        '9' -> 9
-        'a' -> 10
-        'b' -> 11
-        'c' -> 12
-        'd' -> 13
-        'e' -> 14
-        'f' -> 15
-        'g' -> 16
-        'h' -> 17
-        'i' -> 18
-        'j' -> 19
-        'k' -> 20
-        'l' -> 21
-        'm' -> 22
-        'n' -> 23
-        'o' -> 24
-        'p' -> 25
-        'q' -> 26
-        'r' -> 27
-        's' -> 28
-        't' -> 29
-        'u' -> 30
-        'v' -> 31
-        'w' -> 32
-        'x' -> 33
-        'y' -> 34
-        'z' -> 35
-        else -> 0
-    }
-}
+
+fun convertToDigit(n: Char): Int =
+        if (n > '9') n.toInt() - 'a'.toInt() + 10
+        else n.toInt() - '0'.toInt()
 
 /**
  * Средняя
@@ -345,14 +308,15 @@ fun decimalFromString(str: String, base: Int): Int {
  */
 fun roman(n: Int): String {
     var m = n
-    var str = digitToRoman(m % 10, "I", "V", "X")
+    val s = StringBuilder()
+    s.append(digitToRoman(m % 10, "I", "V", "X"))
     m /= 10
-    str = digitToRoman(m % 10, "X", "L", "C") + str
+    s.insert(0, digitToRoman(m % 10, "X", "L", "C"))
     m /= 10
-    str = digitToRoman(m % 10, "C", "D", "M") + str
+    s.insert(0, digitToRoman(m % 10, "C", "D", "M"))
     m /= 10
-    str = digitToRoman(m % 10, "M", "M", "M") + str
-    return str
+    s.insert(0, digitToRoman(m % 10, "M", "M", "M"))
+    return s.toString()
 }
 
 fun digitToRoman(n: Int, a: String, b: String, c: String): String =
@@ -434,8 +398,5 @@ fun toRussian(n: Int): List<String> =
             else -> listOf("", "", "", "")
         }
 
-fun main(args: Array<String>) {
-    println((11 - 10 + 'a'.toInt()).toChar())
-}
 
 
