@@ -138,7 +138,7 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  */
 fun bestLongJump(jumps: String): Int {
     var list = jumps.split(" ")
-    list = list.filter { it != "%" && it != "-" && it != "  " }
+    list = list.filter { it != "%" && it != "-" && it != "" }
     if (list.isEmpty()) return -1
     return try {
         list.maxBy { it.toInt() }!!.toInt()

@@ -373,7 +373,7 @@ fun russian(n: Int): String {
         19 -> "девятнадцать тысяч"
         else -> toRussian(m)[3]
     }
-    if (m % 10 == 0 && m % 100 > 10) s += "тысяч"
+    if (m % 10 == 0 && m % 100 != 10 && m > 10) s += "тысяч"
     m /= 10
     s += toRussian(m)[1]
     m /= 10
