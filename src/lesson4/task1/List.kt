@@ -192,11 +192,8 @@ fun polynom(p: List<Double>, x: Double): Double {
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
     if (list.isEmpty()) return list
-    var sum = list.sum() - list.last()
-    for (i in list.size - 1 downTo 1) {
-        list[i] += sum
-        sum -= list[i - 1]
-    }
+    for (i in 1 until list.size)
+        list[i] += list[i - 1]
     return list
 }
 
