@@ -2,7 +2,6 @@
 
 package lesson5.task1
 
-import java.sql.Struct
 
 /**
  * Пример
@@ -281,8 +280,17 @@ fun hasAnagrams(words: List<String>): Boolean = TODO()
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
-    for (i in list)
-        if ((list - i).contains(number - i)) return Pair(list.indexOf(i), (list - i).indexOf(number - i) + 1)
+    val hash = hashMapOf<Int, List<Int>>()
+    for (i in list) {
+        if (hash[i] == null) hash[i] = listOf()
+        hash[i] = hash[i]!! + list.indexOf(i)
+    }
+
+    for (i in list) {
+        val elem = hash[number - i]
+        if (elem != null && (elem - list.indexOf(i)).isNotEmpty())
+            return Pair(list.indexOf(i), (elem - list.indexOf(i)).first())
+    }
     return Pair(-1, -1)
 }
 
