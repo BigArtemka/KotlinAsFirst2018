@@ -73,15 +73,12 @@ fun main(args: Array<String>) {
  */
 fun dateStrToDigit(str: String): String {
     val parts = str.split(" ").toMutableList()
-    return try {
-        if (parts.size != 3) return ""
-        parts[1] = (months.indexOf(parts[1]) + 1).toString()
-        if (parts[1] == "0") return ""
-        if (parts[0].toInt() > daysInMonth(parts[1].toInt(), parts[2].toInt())) return ""
-        String.format("%02d.%02d.%s", parts[0].toInt(), parts[1].toInt(), parts[2])
-    } catch (e: NumberFormatException) {
-        ""
-    }
+    if (parts.size != 3) return ""
+    parts[1] = (months.indexOf(parts[1]) + 1).toString()
+    if (parts[0].toIntOrNull() == null || parts[1].toIntOrNull() == null || parts[2].toIntOrNull() == null) return ""
+    if (parts[1] == "0") return ""
+    if (parts[0].toInt() > daysInMonth(parts[1].toInt(), parts[2].toInt())) return ""
+    return String.format("%02d.%02d.%s", parts[0].toInt(), parts[1].toInt(), parts[2])
 }
 
 val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября",
@@ -100,16 +97,12 @@ val months = listOf("января", "февраля", "марта", "апрел�
  */
 fun dateDigitToStr(digital: String): String {
     val parts = digital.split(".").toMutableList()
-    return try {
-        if (parts.size != 3) return ""
-        if (parts[0].toInt() > daysInMonth(parts[1].toInt(), parts[2].toInt())) return ""
-        parts[1] = months[parts[1].toInt() - 1]
-        String.format("%d %s %s", parts[0].toInt(), parts[1], parts[2])
-    } catch (e: NumberFormatException) {
-        ""
-    } catch (e: ArrayIndexOutOfBoundsException) {
-        ""
-    }
+    if (parts.size != 3) return ""
+    if (parts[0].toIntOrNull() == null || parts[1].toIntOrNull() == null || parts[2].toIntOrNull() == null) return ""
+    if (parts[1] == "00") return ""
+    if (parts[0].toInt() > daysInMonth(parts[1].toInt(), parts[2].toInt())) return ""
+    parts[1] = months[parts[1].toInt() - 1]
+    return String.format("%d %s %s", parts[0].toInt(), parts[1], parts[2])
 }
 
 /**
@@ -140,11 +133,13 @@ fun bestLongJump(jumps: String): Int {
     var list = jumps.split(" ")
     list = list.filter { it != "%" && it != "-" && it != "" }
     if (list.isEmpty()) return -1
-    return try {
-        list.maxBy { it.toInt() }!!.toInt()
-    } catch (e: NumberFormatException) {
-        return -1
-    }
+    return list.maxBy {
+        try {
+            it.toInt()
+        } catch (e: Exception) {
+            return -1
+        }
+    }!!.toInt()
 }
 
 /**
@@ -182,14 +177,10 @@ fun plusMinus(expression: String): Int = TODO()
 fun firstDuplicateIndex(str: String): Int {
     var s = 0
     val word = str.split(" ")
-    try {
-        for (i in 0 until word.size)
-            if (word[i].toLowerCase() == word[i + 1].toLowerCase())
-                return s
-            else s += word[i].length + 1
-    } catch (e: IndexOutOfBoundsException) {
-        -1
-    }
+    for (i in 0 until word.size - 1)
+        if (word[i].toLowerCase() == word[i + 1].toLowerCase())
+            return s
+        else s += word[i].length + 1
     return -1
 }
 
