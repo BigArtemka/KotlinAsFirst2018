@@ -255,4 +255,51 @@ fun fromRoman(roman: String): Int = TODO()
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
+    val result = mutableListOf<Int>()
+    for (i in 0..(cells - 1))
+        result.add(0)
+    var j = cells / 2
+    var i = 0
+    var numberOfReadCommands = 0
+    var testOnPairs = 0
+    for (symbol in commands) {
+        if (symbol == '[') testOnPairs++
+        else if (symbol == ']') testOnPairs--
+        if (testOnPairs < 0) throw IllegalArgumentException()
+    }
+    if (testOnPairs > 0) throw IllegalArgumentException()
+    while (i < commands.length && numberOfReadCommands < limit) {
+        when (commands[i]) {
+            ' ' -> {
+            }
+            '>' -> j++
+            '<' -> j--
+            '+' -> result[j]++
+            '-' -> result[j]--
+            '[' -> if (result[j] == 0) {
+                var k = 1
+                while (k > 0) {
+                    i++
+                    if (commands[i] == ']') k--
+                    else
+                        if (commands[i] == '[') k++
+                }
+            }
+            ']' -> if (result[j] != 0) {
+                var k = 1
+                while (k > 0) {
+                    i--
+                    if (commands[i] == ']') k++
+                    else
+                        if (commands[i] == '[') k--
+                }
+            }
+            else -> throw IllegalArgumentException()
+        }
+        i++
+        numberOfReadCommands++
+        if (j < 0 || j >= result.size) throw IllegalStateException()
+    }
+    return result
+}
