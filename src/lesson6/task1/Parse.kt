@@ -77,7 +77,7 @@ fun dateStrToDigit(str: String): String {
     parts[1] = (months.indexOf(parts[1]) + 1).toString()
     if (parts[0].toIntOrNull() == null || parts[1].toIntOrNull() == null || parts[2].toIntOrNull() == null) return ""
     if (parts[1] == "0") return ""
-    if (parts[0].toInt() > daysInMonth(parts[1].toInt(), parts[2].toInt())) return ""
+    if (parts[0].toInt() !in 1..daysInMonth(parts[1].toInt(), parts[2].toInt())) return ""
     return String.format("%02d.%02d.%s", parts[0].toInt(), parts[1].toInt(), parts[2])
 }
 
@@ -100,7 +100,7 @@ fun dateDigitToStr(digital: String): String {
     if (parts.size != 3) return ""
     if (parts[0].toIntOrNull() == null || parts[1].toIntOrNull() == null || parts[2].toIntOrNull() == null) return ""
     if (parts[1].toInt() !in 1..12) return ""
-    if (parts[0].toInt() > daysInMonth(parts[1].toInt(), parts[2].toInt())) return ""
+    if (parts[0].toInt() !in 1..daysInMonth(parts[1].toInt(), parts[2].toInt())) return ""
     parts[1] = months[parts[1].toInt() - 1]
     return String.format("%d %s %s", parts[0].toInt(), parts[1], parts[2])
 }

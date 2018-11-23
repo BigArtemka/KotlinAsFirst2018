@@ -77,7 +77,18 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    TODO()
+    val reg = Regex("""[жчшщ][ыяю]""", RegexOption.IGNORE_CASE)
+    File(outputName).writeText(
+            File(inputName).readText().replace(reg) {
+                val letter = it.value[1]
+                it.value[0].toString() + when (letter.toLowerCase()) {
+                    'ы' -> letter - 19
+                    'я' -> letter - 31
+                    'ю' -> letter - 11
+                    else -> ""
+                }
+            }
+    )
 }
 
 
