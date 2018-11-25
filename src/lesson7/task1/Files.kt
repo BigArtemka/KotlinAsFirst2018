@@ -286,33 +286,27 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     }
     outputStream.close()
     var text = File(outputName).readText()
-    var numberOfB = """[*][*]""".toRegex().findAll(text).toList().size
-    var numberOfI = """[*]""".toRegex().findAll(text).toList().size - numberOfB
     var numberOfS = """[~][~]""".toRegex().findAll(text).toList().size
 
     text = text.replace("""[*][*]""".toRegex()) {
         if (!b) {
             b = true
-            numberOfB--
             "<b>"
         } else {
             b = false
-            numberOfB--
-            if (numberOfB > -1)
-                "</b>" else "**"
+
+            "</b>"
 
         }
     }
     text = text.replace("""[*]""".toRegex()) {
         if (!i) {
             i = true
-            numberOfI--
             "<i>"
         } else {
             i = false
-            numberOfI--
-            if (numberOfI > -1)
-                "</i>" else "*"
+
+            "</i>"
         }
     }
 
