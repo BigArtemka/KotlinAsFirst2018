@@ -287,7 +287,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     outputStream.close()
     var text = File(outputName).readText()
     var numberOfB = """[*][*]""".toRegex().findAll(text).toList().size
-    var numberOfI = """[*]""".toRegex().findAll(text).toList().size - numberOfB
+    var numberOfI = """[*]""".toRegex().findAll(text).toList().size - numberOfB * 2
     var numberOfS = """[~][~]""".toRegex().findAll(text).toList().size
 
     text = text.replace("""[~][~]""".toRegex()) {
