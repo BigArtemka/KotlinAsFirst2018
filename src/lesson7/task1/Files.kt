@@ -290,6 +290,19 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var numberOfI = """[*]""".toRegex().findAll(text).toList().size - numberOfB
     var numberOfS = """[~][~]""".toRegex().findAll(text).toList().size
 
+    text = text.replace("""[~][~]""".toRegex()) {
+        if (!s) {
+            s = true
+            numberOfS--
+            if (numberOfS > 0)
+                "<s>" else "~~"
+        } else {
+            s = false
+            numberOfS--
+
+            "</s>"
+        }
+    }
     text = text.replace("""[*][*]""".toRegex()) {
         if (!b) {
             b = true
@@ -318,19 +331,6 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         }
     }
 
-    text = text.replace("""[~][~]""".toRegex()) {
-        if (!s) {
-            s = true
-            numberOfS--
-            if (numberOfS > 0)
-                "<s>" else "~~"
-        } else {
-            s = false
-            numberOfS--
-
-            "</s>"
-        }
-    }
     File(outputName).writeText("<html>" +
             "<body>" +
             "<p>" +
