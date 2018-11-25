@@ -275,8 +275,55 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    TODO()
+    val outputStream = File(outputName).bufferedWriter()
+    var i = 0
+    var b = 0
+    var s = 0
+    for (line in File(inputName).readLines()) {
+        if (line.isEmpty()) outputStream.write("</p>" +
+                "<p>")
+        else outputStream.write(line)
+    }
+    outputStream.close()
+    var text = File(outputName).readText()
+    text = text.replace("""[*][*]""".toRegex()) {
+        if (b == 0) {
+            b++
+            "<b>"
+        } else {
+            b--
+            "</b>"
+        }
+    }
+    text = text.replace("""[*]""".toRegex()) {
+        if (i == 0) {
+            i++
+            "<i>"
+        } else {
+            i--
+            "</i>"
+        }
+    }
+
+    text = text.replace("""[~][~]""".toRegex()) {
+        if (s == 0) {
+            s++
+            "<s>"
+        } else {
+            s--
+            "</s>"
+        }
+    }
+    File(outputName).writeText("<html>" +
+            "<body>" +
+            "<p>" +
+            text +
+            "</p>" +
+            "</body>" +
+            "</html>")
+
 }
+
 
 /**
  * Сложная
