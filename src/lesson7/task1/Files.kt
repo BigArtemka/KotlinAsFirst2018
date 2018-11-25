@@ -276,9 +276,9 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val outputStream = File(outputName).bufferedWriter()
-    var i = 0
-    var b = 0
-    var s = 0
+    var i = false
+    var b = false
+    var s = false
     for (line in File(inputName).readLines()) {
         if (line.isEmpty()) outputStream.write("</p>" +
                 "<p>")
@@ -286,32 +286,46 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     }
     outputStream.close()
     var text = File(outputName).readText()
+    var numberOfB = """[*][*]""".toRegex().findAll(text).toList().size
+    var numberOfI = """[*]""".toRegex().findAll(text).toList().size - numberOfB
+    var numberOfS = """[~][~]""".toRegex().findAll(text).toList().size
+
     text = text.replace("""[*][*]""".toRegex()) {
-        if (b == 0) {
-            b++
+        if (!b) {
+            b = true
+            numberOfB--
             "<b>"
         } else {
-            b--
-            "</b>"
+            b = false
+            numberOfB--
+            if (numberOfB > -1)
+                "</b>" else "**"
+
         }
     }
     text = text.replace("""[*]""".toRegex()) {
-        if (i == 0) {
-            i++
+        if (!i) {
+            i = true
+            numberOfI--
             "<i>"
         } else {
-            i--
-            "</i>"
+            i = false
+            numberOfI--
+            if (numberOfI > -1)
+                "</i>" else "*"
         }
     }
 
     text = text.replace("""[~][~]""".toRegex()) {
-        if (s == 0) {
-            s++
+        if (!s) {
+            s = true
+            numberOfS--
             "<s>"
         } else {
-            s--
-            "</s>"
+            s = false
+            numberOfS--
+            if (numberOfS > -1)
+                "</s>" else "~~"
         }
     }
     File(outputName).writeText("<html>" +
