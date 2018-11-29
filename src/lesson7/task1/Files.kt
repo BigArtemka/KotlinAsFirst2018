@@ -57,7 +57,7 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
     val text = File(inputName).readText()
     val map = mutableMapOf<String, Int>()
     for (i in 0 until substrings.size) {
-        map[substrings[i]] = ("""(?=""" + substrings[i] + """)""").toRegex(RegexOption.IGNORE_CASE).findAll(text).toList().size
+        map[substrings[i]] = (substrings[i]).toRegex(RegexOption.IGNORE_CASE).findAll(text).toList().size
     }
     return map
 }
@@ -84,8 +84,7 @@ fun sibilants(inputName: String, outputName: String) {
                 it.value[0].toString() + when (letter.toLowerCase()) {
                     'ы' -> letter - 19
                     'я' -> letter - 31
-                    'ю' -> letter - 11
-                    else -> ""
+                    else -> letter - 11
                 }
             }
     )
