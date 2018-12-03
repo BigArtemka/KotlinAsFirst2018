@@ -283,11 +283,19 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     outputStream.close()
     var text = File(outputName).readText()
 
-    text = text.replace("""([~][~])([^~][^~]+)([~][~])""".toRegex()) {
-        "<s>" + it.groupValues[2] + "</s>"
+    while (text.contains("""([~][~])(.+)([~][~])""".toRegex())) {
+        text = text.replace("""([~][~])(.+)""".toRegex()) {
+            var str = it.groupValues[2]
+            str = str.replaceFirst("~~", "</s>")
+            "<s>" + str
+        }
     }
-    text = text.replace("""([*][*])([^*]+)([*][*])""".toRegex()) {
-        "<b>" + it.groupValues[2] + "</b>"
+    while (text.contains("""([*][*])(.+)([*][*])""".toRegex())) {
+        text = text.replace("""([*][*])(.+)""".toRegex()) {
+            var str = it.groupValues[2]
+            str = str.replaceFirst("**", "</b>")
+            "<b>" + str
+        }
     }
     text = text.replace("""([*])([^*]+)([*])""".toRegex()) {
         "<i>" + it.groupValues[2] + "</i>"
