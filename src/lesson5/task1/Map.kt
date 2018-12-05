@@ -283,14 +283,10 @@ fun hasAnagrams(words: List<String>): Boolean = TODO()
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     val hash = hashMapOf<Int, List<Int>>()
     for (i in 0 until list.size) {
+        val elem = hash[number - list[i]]
+        if (elem != null) return Pair(elem.first(), i)
         if (hash[list[i]] == null) hash[list[i]] = listOf()
         hash[list[i]] = hash[list[i]]!! + i
-    }
-
-    for (i in 0 until list.size) {
-        val elem = hash[number - list[i]]
-        if (elem != null && (elem - i).isNotEmpty())
-            return Pair(i, (elem - i).first())
     }
     return Pair(-1, -1)
 }
