@@ -323,7 +323,6 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             while (str[i] != '>' && str[i - 1] != 'b' && str[i - 2] == '<') i--
         if (str.contains("<s>"))
             while (str[j] != '>' && str[j - 1] != 's' && str[j - 2] == '<') j--
-
         when {
             "[<][s][>]".toRegex().findAll(str).toList().size > "[<][/][s][>]".toRegex().findAll(str).toList().size && "[<][b][>]".toRegex().findAll(str).toList().size > "[<][/][b][>]".toRegex().findAll(str).toList().size && j > i -> "<i>$str</s></b></i><b><s>"
             "[<][s][>]".toRegex().findAll(str).toList().size > "[<][/][s][>]".toRegex().findAll(str).toList().size && "[<][b][>]".toRegex().findAll(str).toList().size > "[<][/][b][>]".toRegex().findAll(str).toList().size && j < i -> "<i>$str</b></s></i><s><b>"
