@@ -57,7 +57,8 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
     val text = File(inputName).readText()
     val map = mutableMapOf<String, Int>()
     for (i in 0 until substrings.size) {
-        map[substrings[i]] = (substrings[i]).toRegex(RegexOption.IGNORE_CASE).findAll(text).toList().size
+        map[substrings[i]] = (substrings[i]).toRegex(RegexOption.IGNORE_CASE)
+                .findAll(text).toList().size
     }
     return map
 }
@@ -82,9 +83,9 @@ fun sibilants(inputName: String, outputName: String) {
             File(inputName).readText().replace(reg) {
                 val letter = it.value[1]
                 it.value[0].toString() + when (letter.toLowerCase()) {
-                    'ы' -> letter - 19
-                    'я' -> letter - 31
-                    else -> letter - 11
+                    'ы' -> letter - ('ы' - 'и')
+                    'я' -> letter - ('я' - 'а')
+                    else -> letter - ('ю' - 'у')
                 }
             }
     )
@@ -275,10 +276,11 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val outputStream = File(outputName).bufferedWriter()
-    for (line in File(inputName).readLines()) {
-        if (line.isEmpty()) outputStream.write("</p>" +
+    val lines = File(inputName).readLines()
+    for (i in 0 until lines.size) {
+        if (lines[i].isEmpty() && i != 0 && i != lines.size - 1 && lines[i - 1].isNotEmpty()) outputStream.write("</p>" +
                 "<p>")
-        else outputStream.write(line)
+        else outputStream.write(lines[i])
     }
     outputStream.close()
     var text = File(outputName).readText()
