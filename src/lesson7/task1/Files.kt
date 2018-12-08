@@ -298,9 +298,8 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         val str = it.groupValues[2]
         "<i>$str</i>"
     }
-    text = addMoreTags(text, 'b', 'i', 's')
-    text = addMoreTags(text, 'i', 'b', 's')
     text = addMoreTags(text, 's', 'i', 'b')
+    text = addMoreTags(text, 'i', 'b', 's')
     text = addMoreTags(text, 'b', 'i', 's')
 
     File(outputName).writeText("<html>" +
