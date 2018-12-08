@@ -286,36 +286,34 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var text = File(outputName).readText()
     text = text.replace("([*][*])(.*?)([*][*])(.)".toRegex()) {
         val str = it.groupValues[2]
-        var i = str.length - 1
-        if (str.contains("~~"))
-            while (str[i] != '~' && str[i - 1] != '~') i--
-
-        when {
-            "[*]".toRegex().findAll(str).toList().size % 2 != 0 && it.groupValues[4] == "*" && "[~][~]".toRegex().findAll(str).toList().size % 2 != 0 -> "<b>$str</s>" + it.groupValues[4] + "</b><s>"
-            "[*]".toRegex().findAll(str).toList().size % 2 != 0 && "[~][~]".toRegex().findAll(str).toList().size % 2 != 0 && str.indexOfLast { it == '*' } > i -> "<b>$str</i></s></b><s><i>" + it.groupValues[4]
-            "[*]".toRegex().findAll(str).toList().size % 2 != 0 && "[~][~]".toRegex().findAll(str).toList().size % 2 != 0 && str.indexOfLast { it == '*' } < i -> "<b>$str</s></i></b><i><s>" + it.groupValues[4]
-            "[*]".toRegex().findAll(str).toList().size % 2 != 0 && it.groupValues[4] == "*" -> "<b>$str" + it.groupValues[4] + "</b>"
-            "[*]".toRegex().findAll(str).toList().size % 2 != 0 -> "<b>$str</i></b><i>" + it.groupValues[4]
-            "[~][~]".toRegex().findAll(str).toList().size % 2 != 0 -> "<b>$str</s></b><s>" + it.groupValues[4]
-            else -> "<b>$str</b>" + it.groupValues[4]
-        }
+        if (it.groupValues[4] == "*" && "[*]".toRegex().findAll(str).toList().size % 2 != 0) "<b>$str*</b>"
+        else "<b>$str</b>" + it.groupValues[4]
     }
-
     text = text.replace("([~][~])(.*?)([~][~])".toRegex()) {
         val str = it.groupValues[2]
-        var i = str.length - 1
-        if (str.contains("<b>"))
-            while (str[i] != '>' && str[i - 1] != 'b' && str[i - 2] == '<') i--
-
-        when {
-            "[*]".toRegex().findAll(str).toList().size % 2 != 0 && "[<][b][>]".toRegex().findAll(str).toList().size > "[<][/][b][>]".toRegex().findAll(str).toList().size && str.indexOfLast { it == '*' } > i -> "<s>$str</i></b></s><b><i>"
-            "[*]".toRegex().findAll(str).toList().size % 2 != 0 && "[<][b][>]".toRegex().findAll(str).toList().size > "[<][/][b][>]".toRegex().findAll(str).toList().size && str.indexOfLast { it == '*' } < i -> "<s>$str</b></i></s><i><b>"
-            "[*]".toRegex().findAll(str).toList().size % 2 != 0 -> "<s>$str</i></s></i>"
-            "[<][b][>]".toRegex().findAll(str).toList().size > "[<][/][b][>]".toRegex().findAll(str).toList().size -> "<s>$str</b></s></b>"
-            else -> "<s>$str</s>"
-        }
+        "<s>$str</s>"
     }
     text = text.replace("([*])(.*?)([*])".toRegex()) {
+        val str = it.groupValues[2]
+        "<i>$str</i>"
+    }
+    text = text.replace("([<][b][>])(.*?)([<][/][b][>])".toRegex()) {
+        val str = it.groupValues[2]
+        var i = str.length - 1
+        var j = str.length - 1
+        if (str.contains("<i>"))
+            while (str[i] != '>' && str[i - 1] != 'i' && str[i - 2] == '<') i--
+        if (str.contains("<s>"))
+            while (str[j] != '>' && str[j - 1] != 's' && str[j - 2] == '<') j--
+        when {
+            "[<][s][>]".toRegex().findAll(str).toList().size > "[<][/][s][>]".toRegex().findAll(str).toList().size && "[<][i][>]".toRegex().findAll(str).toList().size > "[<][/][i][>]".toRegex().findAll(str).toList().size && j > i -> "<b>$str</s></i></b><i><s>"
+            "[<][s][>]".toRegex().findAll(str).toList().size > "[<][/][s][>]".toRegex().findAll(str).toList().size && "[<][i][>]".toRegex().findAll(str).toList().size > "[<][/][i][>]".toRegex().findAll(str).toList().size && j < i -> "<b>$str</i></s></b><s><i>"
+            "[<][s][>]".toRegex().findAll(str).toList().size > "[<][/][s][>]".toRegex().findAll(str).toList().size -> "<b>$str</s></b></s>"
+            "[<][i][>]".toRegex().findAll(str).toList().size > "[<][/][i][>]".toRegex().findAll(str).toList().size -> "<b>$str</i></b></i>"
+            else -> "<b>$str</b>"
+        }
+    }
+    text = text.replace("([<][i][>])(.*?)([<][/][i][>])".toRegex()) {
         val str = it.groupValues[2]
         var i = str.length - 1
         var j = str.length - 1
@@ -331,6 +329,24 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             else -> "<i>$str</i>"
         }
     }
+
+    text = text.replace("([<][s][>])(.*?)([<][/][s][>])".toRegex()) {
+        val str = it.groupValues[2]
+        var i = str.length - 1
+        var j = str.length - 1
+        if (str.contains("<i>"))
+            while (str[i] != '>' && str[i - 1] != 'i' && str[i - 2] == '<') i--
+        if (str.contains("<b>"))
+            while (str[j] != '>' && str[j - 1] != 'b' && str[j - 2] == '<') j--
+        when {
+            "[<][b][>]".toRegex().findAll(str).toList().size > "[<][/][b][>]".toRegex().findAll(str).toList().size && "[<][i][>]".toRegex().findAll(str).toList().size > "[<][/][i][>]".toRegex().findAll(str).toList().size && j > i -> "<s>$str</b></i></s><i><b>"
+            "[<][b][>]".toRegex().findAll(str).toList().size > "[<][/][b][>]".toRegex().findAll(str).toList().size && "[<][i][>]".toRegex().findAll(str).toList().size > "[<][/][i][>]".toRegex().findAll(str).toList().size && j < i -> "<s>$str</i></b></s><b><i>"
+            "[<][b][>]".toRegex().findAll(str).toList().size > "[<][/][s][>]".toRegex().findAll(str).toList().size -> "<s>$str</b></s></b>"
+            "[<][i][>]".toRegex().findAll(str).toList().size > "[<][/][i][>]".toRegex().findAll(str).toList().size -> "<s>$str</i></s></i>"
+            else -> "<s>$str</s>"
+        }
+    }
+
 
     File(outputName).writeText("<html>" +
             "<body>" +
