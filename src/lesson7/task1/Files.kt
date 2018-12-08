@@ -293,11 +293,11 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         val str = it.groupValues[2]
         "<s>$str</s>"
     }
-    text = text.replace("([*])(.*?)([*])".toRegex()) {
+    text = text.replace("([*])(.+?)([*])".toRegex()) {
         val str = it.groupValues[2]
         "<i>$str</i>"
     }
-    text = text.replace("([<][b][>])(.*?)([<][/][b][>])".toRegex()) {
+    text = text.replace("([<][b][>])(.+?)([<][/][b][>])".toRegex()) {
         val str = it.groupValues[2]
         var i = str.length - 1
         var j = str.length - 1
@@ -313,7 +313,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             else -> "<b>$str</b>"
         }
     }
-    text = text.replace("([<][i][>])(.*?)([<][/][i][>])".toRegex()) {
+    text = text.replace("([<][i][>])(.+?)([<][/][i][>])".toRegex()) {
         val str = it.groupValues[2]
         var i = str.length - 1
         var j = str.length - 1
