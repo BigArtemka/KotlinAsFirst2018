@@ -326,9 +326,9 @@ fun addMoreTags(text: String, firstTag: Char, secondTag: Char, thirdTag: Char) =
                     if (countOfTags(str, "<$secondTag>") > countOfTags(str, "</$secondTag>"))
                         if (j > i) "<$firstTag>$str</$thirdTag></$secondTag></$firstTag><$secondTag><$thirdTag>"
                         else "<$firstTag>$str</$secondTag></$thirdTag></$firstTag><$thirdTag><$secondTag>"
-                    else "<$firstTag>$str</$thirdTag></$firstTag></$thirdTag>"
+                    else "<$firstTag>$str</$thirdTag></$firstTag><$thirdTag>"
                 countOfTags(str, "<$secondTag>") > countOfTags(str, "</$secondTag>") ->
-                    "<$firstTag>$str</$secondTag></$firstTag></$secondTag>"
+                    "<$firstTag>$str</$secondTag></$firstTag><$secondTag>"
                 else -> "<$firstTag>$str</$firstTag>"
             }
         }
