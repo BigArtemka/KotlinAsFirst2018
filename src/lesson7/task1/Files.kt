@@ -322,17 +322,18 @@ fun addMoreTags(text: String, firstTag: Char, secondTag: Char, thirdTag: Char) =
             if (str.contains("<$thirdTag>"))
                 while (str[j] != '>' && str[j - 1] != thirdTag && str[j - 2] == '<') j--
             when {
-                "[<]$thirdTag[>]".toRegex().findAll(str).toList().size > "[<][/]$thirdTag[>]".toRegex().findAll(str).toList().size ->
-                    if ("[<]$secondTag[>]".toRegex().findAll(str).toList().size > "[<][/]$secondTag[>]".toRegex().findAll(str).toList().size)
+                countOfTags(str, "<$thirdTag>") > countOfTags(str, "</$thirdTag>") ->
+                    if (countOfTags(str, "<$secondTag>") > countOfTags(str, "</$secondTag>"))
                         if (j > i) "<$firstTag>$str</$thirdTag></$secondTag></$firstTag><$secondTag><$thirdTag>"
                         else "<$firstTag>$str</$secondTag></$thirdTag></$firstTag><$thirdTag><$secondTag>"
                     else "<$firstTag>$str</$thirdTag></$firstTag></$thirdTag>"
-                "[<]$secondTag[>]".toRegex().findAll(str).toList().size > "[<][/]$secondTag[>]".toRegex().findAll(str).toList().size ->
+                countOfTags(str, "<$secondTag>") > countOfTags(str, "</$secondTag>") ->
                     "<$firstTag>$str</$secondTag></$firstTag></$secondTag>"
                 else -> "<$firstTag>$str</$firstTag>"
             }
         }
-
+fun countOfTags(str: String, tag: String) =
+        tag.toRegex().findAll(str).toList().size
 /**
  * Сложная
  *
