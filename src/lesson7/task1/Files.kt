@@ -333,11 +333,11 @@ fun addMoreTags(text: String, firstTag: Char, secondTag: Char, thirdTag: Char) =
             else k = -1
             when {
                 j > k ->
-                    if (m > i)
+                    if (i > m)
                         if (j > i) "<$firstTag>$str</$thirdTag></$secondTag></$firstTag><$secondTag><$thirdTag>"
                         else "<$firstTag>$str</$secondTag></$thirdTag></$firstTag><$thirdTag><$secondTag>"
                     else "<$firstTag>$str</$thirdTag></$firstTag><$thirdTag>"
-                m > i ->
+                i > m ->
                     "<$firstTag>$str</$secondTag></$firstTag><$secondTag>"
                 else -> "<$firstTag>$str</$firstTag>"
             }
