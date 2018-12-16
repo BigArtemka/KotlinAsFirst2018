@@ -315,7 +315,7 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
     var result = setOf<String>()
     val n = treasures.size
-    val price: Array<Array<Int>> = Array(n + 1) { Array(capacity + 1) { 0 } }
+    val price = Array(n + 1) { Array(capacity + 1) { 0 } }
     var curWeight: Int
     var curPrice: Int
 

@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson8.task1
 
 import lesson1.task1.sqr
@@ -33,7 +34,8 @@ class Triangle private constructor(private val points: Set<Point>) {
 
     val c: Point get() = pointList[2]
 
-    constructor(a: Point, b: Point, c: Point): this(linkedSetOf(a, b, c))
+    constructor(a: Point, b: Point, c: Point) : this(linkedSetOf(a, b, c))
+
     /**
      * Пример: полупериметр
      */
@@ -76,7 +78,11 @@ data class Circle(val center: Point, val radius: Double) {
      * расстояние между их центрами минус сумма их радиусов.
      * Расстояние между пересекающимися окружностями считать равным 0.0.
      */
-    fun distance(other: Circle): Double = TODO()
+    fun distance(other: Circle): Double {
+        val d = center.distance(other.center) - (radius + other.radius)
+        return if (d < 0.0) 0.0
+        else d
+    }
 
     /**
      * Тривиальная
@@ -103,7 +109,27 @@ data class Segment(val begin: Point, val end: Point) {
  * Дано множество точек. Вернуть отрезок, соединяющий две наиболее удалённые из них.
  * Если в множестве менее двух точек, бросить IllegalArgumentException
  */
-fun diameter(vararg points: Point): Segment = TODO()
+fun diameter(vararg points: Point): Segment {
+    if (points.size < 2)
+        throw IllegalArgumentException()
+
+    if (points.size == 2)
+        return Segment(points[0], points[1])
+    var firstPoint = Point(0.0, 0.0)
+    var secPoint = Point(0.0, 0.0)
+    var maxDistance = 0.0
+    for (i in 0 until points.size - 1)
+        for (j in i + 1 until points.size) {
+            val d = points[i].distance(points[j])
+            if (d > maxDistance) {
+                maxDistance = d
+                firstPoint = points[i]
+                secPoint = points[j]
+            }
+        }
+    return Segment(firstPoint, secPoint)
+}
+
 
 /**
  * Простая
@@ -124,7 +150,7 @@ class Line private constructor(val b: Double, val angle: Double) {
         require(angle >= 0 && angle < PI) { "Incorrect line angle: $angle" }
     }
 
-    constructor(point: Point, angle: Double): this(point.y * cos(angle) - point.x * sin(angle), angle)
+    constructor(point: Point, angle: Double) : this(point.y * cos(angle) - point.x * sin(angle), angle)
 
     /**
      * Средняя

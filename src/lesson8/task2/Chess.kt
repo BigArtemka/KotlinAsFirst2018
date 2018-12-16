@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson8.task2
 
 /**
@@ -31,7 +32,11 @@ data class Square(val column: Int, val row: Int) {
  * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
  * Если нотация некорректна, бросить IllegalArgumentException
  */
-fun square(notation: String): Square = TODO()
+fun square(notation: String): Square =
+        if (notation[0] - 'a' in 0..7 && notation[1] - '0' in 1..8)
+            Square(notation[0] - 'a' + 1, notation[1] - '0')
+        else throw IllegalArgumentException()
+
 
 /**
  * Простая
@@ -155,7 +160,24 @@ fun kingMoveNumber(start: Square, end: Square): Int = TODO()
  *          kingTrajectory(Square(3, 5), Square(6, 2)) = listOf(Square(3, 5), Square(4, 4), Square(5, 3), Square(6, 2))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun kingTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun kingTrajectory(start: Square, end: Square): List<Square> {
+    val list = mutableListOf(start)
+    var column = start.column
+    var row = start.row
+    if (start == end) return list
+    while (row != end.row || column != end.column) {
+        when {
+            row < end.row -> row++
+            row > end.row -> row--
+        }
+        when {
+            column < end.column -> column++
+            column > end.column -> column--
+        }
+        list.add(Square(column, row))
+    }
+    return list
+}
 
 /**
  * Сложная

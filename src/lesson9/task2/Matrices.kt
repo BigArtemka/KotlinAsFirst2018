@@ -1,7 +1,9 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson9.task2
 
 import lesson9.task1.Matrix
+import lesson9.task1.MatrixImpl
 import lesson9.task1.createMatrix
 
 // Все задачи в этом файле требуют наличия реализации интерфейса "Матрица" в Matrix.kt
@@ -59,7 +61,37 @@ operator fun Matrix<Int>.plus(other: Matrix<Int>): Matrix<Int> {
  * 10 11 12  5
  *  9  8  7  6
  */
-fun generateSpiral(height: Int, width: Int): Matrix<Int> = TODO()
+fun generateSpiral(height: Int, width: Int): Matrix<Int> {
+    var i = 0
+    var j = 0
+    var k = 1
+    val matrix = createMatrix(height, width, 0)
+    matrix[i, j] = k
+    while (k < height * width) {
+        while (j < width - 1 && matrix[i, j + 1] == 0) {
+            j++
+            k++
+            matrix[i, j] = k
+        }
+
+        while (i < height - 1 && matrix[i + 1, j] == 0) {
+            i++
+            k++
+            matrix[i, j] = k
+        }
+        while (j > 0 && matrix[i, j - 1] == 0) {
+            j--
+            k++
+            matrix[i, j] = k
+        }
+        while (i > 0 && matrix[i - 1, j] == 0) {
+            i--
+            k++
+            matrix[i, j] = k
+        }
+    }
+return matrix
+}
 
 /**
  * Сложная
