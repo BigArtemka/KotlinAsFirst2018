@@ -33,7 +33,7 @@ data class Square(val column: Int, val row: Int) {
  * Если нотация некорректна, бросить IllegalArgumentException
  */
 fun square(notation: String): Square =
-        if (notation[0] - 'a' in 0..7 && notation[1] - '0' in 1..8)
+        if (notation.length == 2 && notation[0] - 'a' in 0..7 && notation[1] - '0' in 1..8)
             Square(notation[0] - 'a' + 1, notation[1] - '0')
         else throw IllegalArgumentException()
 
