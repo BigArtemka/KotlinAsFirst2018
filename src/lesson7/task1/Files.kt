@@ -320,16 +320,16 @@ fun addMoreTags(text: String, firstTag: Char, secondTag: Char, thirdTag: Char) =
             var k = str.length - 1
             var m = str.length - 1
             if (str.contains("<$secondTag>"))
-                while (str[i] != '>' && str[i - 1] != secondTag && str[i - 2] == '<') i--
+                while (str[i] != '>' || str[i - 1] != secondTag || str[i - 2] != '<') i--
             else i = -1
             if (str.contains("</$secondTag>"))
-                while (str[m] != '>' && str[m - 1] != secondTag && str[m - 2] == '/' && str[m - 3] == '<') m--
+                while (str[m] != '>' || str[m - 1] != secondTag || str[m - 2] != '/' || str[m - 3] != '<') m--
             else m = -1
             if (str.contains("<$thirdTag>"))
-                while (str[j] != '>' && str[j - 1] != thirdTag && str[j - 2] == '<') j--
+                while (str[j] != '>' || str[j - 1] != thirdTag || str[j - 2] != '<') j--
             else j = -1
             if (str.contains("</$thirdTag>"))
-                while (str[k] != '>' && str[k - 1] != thirdTag && str[k - 2] == '/' && str[k - 3] == '<') k--
+                while (str[k] != '>' || str[k - 1] != thirdTag || str[k - 2] != '/' || str[k - 3] != '<') k--
             else k = -1
             when {
                 j > k ->
